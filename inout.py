@@ -17,7 +17,7 @@ def parse_and_warn():
     files = read_files()
     for file in files:
         parsed = parse.parse(get_contents(file))
-        printWarnings(warnings.assembleWarning(), parsed)
+        printWarnings(warnings.assembleWarning(parsed), file)
 
 def read_files():
     ''' Function to return list of .py files in the current directory '''

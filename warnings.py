@@ -5,8 +5,6 @@ import re
 biasWarning = collections.namedtuple('BiasWarning', ['lineNumber', 'type', 'warningMessage'])
 
 BIAS_WARNINGS = []
-
-
 # Strings, Variable, Class names
 # Gender Associated Language
 # he/him/his, she/her/hers
@@ -15,9 +13,9 @@ BIAS_WARNINGS = []
 PRONOUNS = 'Pronouns'
 GENDERED_LANGUAGE = 'Gendered Language'
 PROBLEM_TERMS = 'Problem Terms'
-LIBRARIES = 'libraries'
+LIBRARIES = 'import'
 PLAINTEXT = 'plaintext'
-VARIABLES = 'variables'
+VARIABLES = 'variable'
 
 warnings = {
     PRONOUNS:'Found the usage of gendered pronoun: ',
@@ -31,8 +29,8 @@ warnings = {
 
 # Language Lists
 language = {
-    PRONOUNS: ['he', 'him', ' his', 'she', 'her', 'hers'],
-    GENDERED_LANGUAGE: ['men', 'mankind', 'women', 'grandfather', 'grandfathered'],
+    PRONOUNS: ['he', 'him', 'his', 'she', 'her', 'hers'],
+    GENDERED_LANGUAGE: ['men', 'man', 'mankind', 'women', 'woman', 'grandfather', 'grandfathered'],
     PROBLEM_TERMS: ['slave', 'blacklist', 'whitelist', 'sanity', 'blackhat', 'whitehat', 'black hat', 'white hat'],
     LIBRARIES: []
 }
@@ -42,22 +40,21 @@ language = {
 # plaintext strings
 # variable names
 # libraries
-def check(type, data):
-    for keyword in language[type]:
-        for ele in data:
-            lineNumber = ele[0]
-            string = ele[1]
-            p = re.compile("\b({string})\b", re.IGNORECASE)
-            match = p.search(string)
-            if match:
-                BIAS_WARNINGS.append(biasWarning(lineNumber, type, warnings[type] + keyword))
+def check(warning_type, data):
+    for keyword in language[warning_type]:
+        p = re.compile("[^a-z^A-Z](man)[^a-z^A-Z]", re.IGNORECASE)
+        line_number = data[1]
+        string = data[0]
+        match = p.search(string)
+        if match is not None:
+            BIAS_WARNINGS.append(biasWarning(line_number, warning_type, warnings[warning_type] + keyword))
 
 
-def assembleWarning():
-    dict = {}
-    plaintext_list = dict[PLAINTEXT]
-    variables_list = dict[VARIABLES]
-    library_list = dict[LIBRARIES]
+def assembleWarning(parsed):
+    BIAS_WARNINGS.clear()
+    plaintext_list = parsed[PLAINTEXT]
+    variables_list = parsed[VARIABLES]
+    library_list = parsed[LIBRARIES]
     for data in plaintext_list:
         check(PROBLEM_TERMS, data)
         check(GENDERED_LANGUAGE, data)
