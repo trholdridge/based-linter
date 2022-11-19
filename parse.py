@@ -5,7 +5,7 @@ import ast
 def parse(lineList):
     fullCode = "\n".join(lineList)
     fullAst = ast.parse(fullCode)
-    print(ast.dump(fullAst))
+    #print(ast.dump(fullAst))
     contentTypes = ["plaintext", "variable", "import"]
     visitors = [PlaintextVisitor(), VariableVisitor(), ImportVisitor()]
     parsed = {}
