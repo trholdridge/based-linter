@@ -5,13 +5,14 @@ import ast
 def parse(lineList):
     fullCode = "\n".join(lineList)
     fullAst = ast.parse(fullCode)
-    p = PlaintextVisitor()
-    v = VariableVisitor()
-    p.visit(fullAst)
-    v.visit(fullAst)
+    print(ast.dump(fullAst))
+    contentTypes = ["plaintext", "variable", "import"]
+    visitors = [PlaintextVisitor(), VariableVisitor(), ImportVisitor()]
     parsed = {}
-    parsed["plaintext"] = p.matchingNodes
-    parsed["variable"] = v.matchingNodes
+    for i, visitor in enumerate(visitors):
+        visitor.visit(fullAst)
+        parsed[contentTypes[i]] = visitor.matchingNodes
+        
     return parsed
     
 
@@ -52,3 +53,16 @@ class VariableVisitor(TypeVisitor):
     def transform(self, node):
         return node.id
     
+    
+class ImportVisitor(TypeVisitor):
+    def __init__(self):
+        super().__init__()
+    
+    def match(self, node):
+        return type(node) is ast.ImportFrom or type(node) is ast.Import
+    
+    def transform(self, node):
+        if type(node) is ast.ImportFrom:
+            return node.module
+        elif type(node) is ast.Import:
+            return node.names[0].name
