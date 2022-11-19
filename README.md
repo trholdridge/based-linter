@@ -3,7 +3,10 @@
 A linter for Python, in Python, created in ~8 hours for Northeastern IWC's 2022 hackathon.
 
 ## Usage
-```./based-linter path/to/file/or/directory```
+```
+./based-linter path/to/file/or/directory
+```
+
 If given a directory path, it will try to lint all the files in it.
 
 ## What it does
