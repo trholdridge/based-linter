@@ -5,30 +5,50 @@ import ast
 def parse(lineList):
     fullCode = "\n".join(lineList)
     fullAst = ast.parse(fullCode)
-    tv = TypeVisitor(None)
-    tv.visit(fullAst)
+    p = PlaintextVisitor()
+    v = VariableVisitor()
+    p.visit(fullAst)
+    v.visit(fullAst)
+    parsed = {}
+    parsed["plaintext"] = p.matchingNodes
+    parsed["variable"] = v.matchingNodes
+    return parsed
+    
 
 class TypeVisitor(ast.NodeVisitor):
-    def __init__(self, matchLambda, transformLambda=lambda x: x):
+    def __init__(self):
         self.matchingNodes = set()
-        self.matchLambda = matchLambda
-        self.transformLambda = transformLambda
     
     def generic_visit(self, node):
-        print(type(node).__name__)
+        if self.match(node):
+            self.matchingNodes.add((self.transform(node), node.lineno))
         ast.NodeVisitor.generic_visit(self, node)
+        
+    def match(self, node):
+        return True
+    
+    def transform(self, node):
+        return type(node).__name__
 
-#    def getMatchingNodes(self, parentNode):
-#        for node in ast.walk(parentNode):
-#           if self.matchLambda(node):
-#                self.matchingNodes.add(self.transformLambda(node))
-
-class PrintTypeVisitor(TypeVisitor):
-    def __init__(self):
-        self.matchLambda = lambda node: True
-        self.transformLambda = lambda node: print(type(node))
                 
-#class PlaintextVisitor(TypeVisitor):
-#    def __init__(self):
-#        matchString = lambda node: (type(node) is ast.Constant && type(node.value) is str)
-#        super(matchString)
+class PlaintextVisitor(TypeVisitor):
+    def __init__(self):
+        super().__init__()
+    
+    def match(self, node):
+        return type(node) is ast.Constant and type(node.value) is str
+    
+    def transform(self, node):
+        return node.value
+    
+
+class VariableVisitor(TypeVisitor):
+    def __init__(self):
+        super().__init__()
+
+    def match(self, node):
+        return type(node) is ast.Name
+    
+    def transform(self, node):
+        return node.id
+    
