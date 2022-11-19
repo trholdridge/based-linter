@@ -1,13 +1,10 @@
 import collections
 import re
 
-# lineNumber is the number that the warning appears on, type is a string of what type of warning it is,
+# lineNumber is the number that the warning appears on, type is a string of what type of warning it is, warning message is the warning to display
 biasWarning = collections.namedtuple('BiasWarning', ['lineNumber', 'type', 'warningMessage'])
 
 BIAS_WARNINGS = []
-# Strings, Variable, Class names
-# Gender Associated Language
-# he/him/his, she/her/hers
 
 # String Constants
 PRONOUNS = 'Pronouns'
@@ -24,12 +21,13 @@ warnings = {
     LIBRARIES: 'Found the library "{term}" that may contain gendered biases: '
 }
 
-alternatives = collections.defaultdict(lambda a:
-                                       "{term} as a term has several meanings, you may have to do more research to "
-                                       "find a good alternative.\n We recommend starting at Google's style wordlist: "
-                                       "https://developers.google.com/style/word-list")
-alternatives['mankind'] = 'humanity, humankind'
-alternatives['man'] = 'If using "man" to refer to a generic person'
+#FOR P0
+# alternatives = collections.defaultdict(lambda a:
+#                                        "{term} as a term has several meanings, you may have to do more research to "
+#                                        "find a good alternative.\n We recommend starting at Google's style wordlist: "
+#                                        "https://developers.google.com/style/word-list")
+# alternatives['mankind'] = 'humanity, humankind'
+# alternatives['man'] = 'If using "man" to refer to a generic person'
 
 # Language Lists
 language = {
@@ -43,7 +41,6 @@ language = {
 
 def check(warning_type, data):
     for keyword in language[warning_type]:
-        # p = re.compile("[^a-z^A-Z](man)[^a-z^A-Z]", re.IGNORECASE)
         line_number = data[1]
         string = data[0]
         regex = "[^a-zA-Z0-9]({word})[^a-zA-Z0-9]|^({word})[^a-zA-Z0-9]|[^a-zA-Z0-9]({word})$|(^{word}$)".format(word=keyword)
