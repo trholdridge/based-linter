@@ -7,13 +7,17 @@
 
 import os
 import sys
-import parse
 
-def read_and_send():
-    ''' Call this function to read in all files, and send their contents one at a time to the parser from tulasi  '''
+import parse
+import warnings
+
+
+def parse_and_warn():
+    ''' Runs program by reading files, sending their contents to be parsed, and printing their warnings  '''
     files = read_files()
     for file in files:
         parse.parse(get_contents(file))
+        printWarnings(warnings.assembleWarning(), file)
 
 def read_files():
     ''' Function to return list of .py files in the current directory '''

@@ -1,1 +1,21 @@
 #!usr/bin/python3
+
+''' Main for based-linter
+
+    Victoria Adebiyi
+    Tulasi Holdridge
+    Emma Sommers
+'''
+
+import inout
+
+def main():
+    print('Welcome to based-linter')
+    print()
+    inout.parse_and_warn()
+    print()
+    print('Parsing Complete. ')
+
+
+if __name__ == '__main__':
+    main()
