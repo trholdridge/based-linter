@@ -1,4 +1,5 @@
-'''  Function to Read in Files for Parsing
+'''
+     Function to Read in Files for Parsing and Output Errors from list of Errors 
      Emma Sommers
      11/19/22
 '''
@@ -7,8 +8,6 @@
 import os
 import sys
 import parse
-
-
 
 def read_and_send():
     ''' Call this function to read in all files, and send their contents one at a time to the parser from tulasi  '''
@@ -24,3 +23,9 @@ def get_contents(file):
     ''' Read in 1 file and return its contents as a list of string '''
     with open(os.path.join(sys.argv[1], file), 'r') as infile:
         return infile.readlines()
+
+def printWarnings(warn_list, fname):
+    ''' Prints list of Warnings for each file in a list of Warnings  '''
+    for error in warn_list:
+        print("File ", fname, ", line ", error.lineNumber, sep='')
+        print('\t', error.type, ": ", error.warningMessage, sep='')
