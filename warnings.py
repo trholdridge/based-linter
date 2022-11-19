@@ -45,7 +45,8 @@ def check(warning_type, data):
         p = re.compile("[^a-z^A-Z](man)[^a-z^A-Z]", re.IGNORECASE)
         line_number = data[1]
         string = data[0]
-        match = p.search(string)
+        regex = "[^a-zA-Z0-9]({word})[^a-zA-Z0-9]|^({word})[^a-zA-Z0-9]|[^a-zA-Z0-9]({word})$".format(word=keyword)
+        match = re.search(regex, string)
         if match is not None:
             BIAS_WARNINGS.append(biasWarning(line_number, warning_type, warnings[warning_type] + keyword))
 
