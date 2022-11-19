@@ -1,23 +1,25 @@
-# based-linter
+# Based Linter
 
-MVP - based-linter-single file
-read all the code
-return warnings about how cringe your code is
+A linter for Python, in Python, created in ~8 hours for Northeastern IWC's 2022 hackathon.
 
-things to identify code
-* use tools for biased language in plaintext
-* look for biased language in strings
-* problematic language: "master/slave"
+## Usage
+```
+./based-linter path/to/file/or/directory
+```
 
-P0 - adding AI bias checker
+If given a directory path, it will try to lint all the files in it.
 
-skills needed
-* code parsing
-* researching standards for inclusive/biased code
-* look at strings and variable names
-* command line output
+## What it does
+* identify biased & non-inclusive language in plaintext and variable names (drawing from various best-practice style guides)
+* suggest alternative phrasing
+* complain at you for using certain pre-trained word embedding libraries with undesirable biases
 
-Actionable Items
-* Creating PL Syntax Trees
-* Research standards for biased code
-* Input/Output
+## How it does
+* parse Python code into abstract syntax tree
+* check different types of content in the code (strings, names, imports)
+* output a list of bias warnings
+
+## More resources
+* [Word Embeddings Fairness Evaluation Framework](https://wefe.readthedocs.io/en/latest/)
+* [NPM "Alex"](https://www.npmjs.com/package/alex)
+* [Google developer docs style guide](https://developers.google.com/style/word-list)
