@@ -5,8 +5,8 @@ import ast
 def parse(lineList):
     fullCode = "".join(lineList)
     fullAst = ast.parse(fullCode)
-    print(ast.dump(fullAst))
-    contentTypes = ["plaintext", "variable", "import"]
+    #print(ast.dump(fullAst))
+    contentTypes = ["Plaintext", "Variable", "Libraries"]
     visitors = [PlaintextVisitor(), VariableVisitor(), ImportVisitor()]
     parsed = {}
     for i, visitor in enumerate(visitors):

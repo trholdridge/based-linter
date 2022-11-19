@@ -39,7 +39,7 @@ def printWarnings(warn_list, fname):
     colors = {"Pronouns": "\033[1;35m",
               "Gendered Language": "\033[1;36m",
               "Problem Terms": "\033[1;34m",
-              "libraries":"\033[1;32m" }
+              "Libraries": "\033[1;32m" }
     for error in warn_list:
         print("File ", fname, ", line ", error.lineNumber, sep='')
         print('\t', colors[error.type], error.type, END, ": ", error.warningMessage, sep='')
