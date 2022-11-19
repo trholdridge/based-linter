@@ -30,6 +30,11 @@ def get_contents(file):
 
 def printWarnings(warn_list, fname):
     ''' Prints list of Warnings for each file in a list of Warnings  '''
+    END = "\033[0m"
+    colors = {"Pronouns": "\033[1;35m",
+              "Gendered Language": "\033[1;36m",
+              "Problem Terms": "\033[1;34m",
+              "libraries":"\033[1;32m" }
     for error in warn_list:
         print("File ", fname, ", line ", error.lineNumber, sep='')
-        print('\t', error.type, ": ", error.warningMessage, sep='')
+        print('\t', colors[error.type], error.type, ": ", error.warningMessage, END, sep='')
